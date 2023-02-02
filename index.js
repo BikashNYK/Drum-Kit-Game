@@ -1,39 +1,43 @@
-
 let totalDrumButtons = document.querySelectorAll(".drum").length;
 
-// for (let index = 0; index < totalDrumButtons; index++) {
-//     document.querySelectorAll("button")[index].addEventListener("click",onClick);
-//     function onClick(){
-//         alert('I got clicked');
-//     }
-// }
-
-// for button press
+// for button click
 let i = 0;
 while (i < totalDrumButtons) {
-    document.querySelectorAll("button")[i].addEventListener("click", onClick);
+    document.querySelectorAll(".drum")[i].addEventListener("click", onClick);
     function onClick() {
 
-        // this keyword give this value
-        // if this.innerHTML it means it give the keyword which clicked
-        // console.log(this.innerHTML);
-        // this.style.color = "White";
-
+        // this keyword gives the value of the clicked element
         let buttonInnerHTML = this.innerHTML;
         makeSound(buttonInnerHTML);
-        }
-    i++;
+
+        // add a class to indicate the button has been clicked
+        this.classList.add("clicked");
+
+        // remove the class after a short time to revert the style back to normal
+        setTimeout(() => {
+            this.classList.remove("clicked");
+        }, 100);
     }
-    
+    i++;
+}
 
-    // for keypress
-    document.addEventListener("keypress",function(event){
-        console.log(event);
-        makeSound(event.key);
-    })
+// for keypress
+document.addEventListener("keypress", function (event) {
+    let key = event.key;
+    makeSound(key);
 
-function makeSound(key){
+    // Add the 'clicked' class to the button element that corresponds to the key press
+    let button = document.querySelector(`.${key}`);
+    button.classList.add("playing");
 
+    // Remove the class after a short time to revert the style back to normal
+    setTimeout(() => {
+        button.classList.remove("playing");
+    }, 100);
+});
+
+
+function makeSound(key) {
     switch (key) {
         case "d":
             let tom1 = new Audio("sounds/tom-1.mp3");
@@ -66,11 +70,5 @@ function makeSound(key){
         default:
             console.log(buttonInnerHTML);
             break;
+    }
 }
-}
-
-
-
-
-// var audio=new Audio('sounds/crash.mp3');
-// audio.play();
